@@ -241,6 +241,7 @@ def main():
 	string = []
 	symbol = []
 	errorLine = []
+	tokens = []
 	for j in range(3):
 	    row = []
 	    for i in range(10):
@@ -266,18 +267,20 @@ def main():
 					errorLine.append(lineNumber)
 					token = None
 				elif token != None:
-					print(token)
+					tokens.append(token)
 					token = None
 			string.clear()
 		if char in alphabets or char in ALPHABETS or char in numbers or char == '\t' or char == '\n' or char == ' ':
 			if len(symbol) != 0:
 				token = dfa(symbol)
 				if token != None:
-					print(token)
+					tokens.append(token)
 					token = None
 			symbol.clear()
 		if not char:
 			break
+	print(tokens)
+	print()
 	for i in errorLine:
 		print(f"<error, line number {i}>")
 	file.close()
