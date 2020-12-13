@@ -1,23 +1,7 @@
-file = open('input_code.txt', 'r')
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 ALPHABETS = [x.upper() for x in alphabets]
 punctuations = [';', '(', ')', '{', '}', '.', '-', '+', '*', '/', '<', '>', '=', '&', '|', '!']
-lineNumber = 1
-table = []
-string = []
-symbol = []
-errorLine = []
-for j in range(3):
-    row = []
-    for i in range(10):
-        row.append(-1)
-    table.append(row)
-for i in range(10):
-    print()
-    for j in range(3):
-        print(table[j][i], end="\t")
-print()
 
 def dfa(string):
 	count = -1
@@ -250,33 +234,52 @@ def dfa(string):
 				token = "<literal, %s>" % number
 				return token
 
-while 1:
-	char = file.read(1)
-	if char == '\n':
-		lineNumber += 1
-	if char in punctuations:
-		symbol.append(char)
-	if char != ' ' and char != '\n' and char != '\t' and (char not in punctuations or char == '.'):
-		string.append(char)
-	if char == ' ' or char == '\n' or char == '\t' or (char in punctuations and char != '.'):
-		if len(string) != 0:
-			token = dfa(string)
-			if token == "error":
-				errorLine.append(lineNumber)
-				token = None
-			elif token != None:
-				print(token)
-				token = None
-		string.clear()
-	if char in alphabets or char in ALPHABETS or char in numbers or char == '\t' or char == '\n' or char == ' ':
-		if len(symbol) != 0:
-			token = dfa(symbol)
-			if token != None:
-				print(token)
-				token = None
-		symbol.clear()
-	if not char:
-		break
-for i in errorLine:
-	print(f"<error, line number {i}>")
-file.close()
+def main():
+	file = open('input_code.txt', 'r')
+	lineNumber = 1
+	table = []
+	string = []
+	symbol = []
+	errorLine = []
+	for j in range(3):
+	    row = []
+	    for i in range(10):
+	        row.append(-1)
+	    table.append(row)
+	# for i in range(10):
+	#     print()
+	#     for j in range(3):
+	#         print(table[j][i], end="\t")
+	# print()
+	while 1:
+		char = file.read(1)
+		if char == '\n':
+			lineNumber += 1
+		if char in punctuations:
+			symbol.append(char)
+		if char != ' ' and char != '\n' and char != '\t' and (char not in punctuations or char == '.'):
+			string.append(char)
+		if char == ' ' or char == '\n' or char == '\t' or (char in punctuations and char != '.'):
+			if len(string) != 0:
+				token = dfa(string)
+				if token == "error":
+					errorLine.append(lineNumber)
+					token = None
+				elif token != None:
+					print(token)
+					token = None
+			string.clear()
+		if char in alphabets or char in ALPHABETS or char in numbers or char == '\t' or char == '\n' or char == ' ':
+			if len(symbol) != 0:
+				token = dfa(symbol)
+				if token != None:
+					print(token)
+					token = None
+			symbol.clear()
+		if not char:
+			break
+	for i in errorLine:
+		print(f"<error, line number {i}>")
+	file.close()
+
+main()
